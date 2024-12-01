@@ -17,7 +17,7 @@ with open(labels_path, "r") as f:
     labels = [line.strip() for line in f.readlines()]
 
 cap = cv2.VideoCapture(0)
-detector = HandDetector(maxHands=2)  # Set maxHands to 2 to detect both hands
+detector = HandDetector(maxHands=1)  # Set maxHands to 2 to detect both hands
 
 # Load the model, ensuring compatibility with custom objects if needed
 model_path = "Model/keras_model.h5"
@@ -109,6 +109,7 @@ while True:
         font_scale = 2
         font_thickness = 2
         text_size = cv2.getTextSize(combined_label, font, font_scale, font_thickness)[0]
+        
 
         # Calculate the position for the rectangle and text
         text_x = 10
