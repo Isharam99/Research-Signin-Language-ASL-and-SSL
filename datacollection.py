@@ -10,7 +10,7 @@ offset = 20
 imgSize = 300
 counter = 0
 
-folder = "C:/Users/PCS/Desktop/1/Data/Z"  # path to save images
+folder = "C:/Users/PCS/Desktop/1/Data Words/Hello"  # path to save images
 
 
 # data collection

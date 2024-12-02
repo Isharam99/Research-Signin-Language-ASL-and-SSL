@@ -4,7 +4,7 @@ import numpy as np
 import math
 import os
 import tensorflow as tf
-from tensorflow.keras.layers import DepthwiseConv2D # type: ignore
+from tensorflow.keras.layers import DepthwiseConv2D
 
 print(tf.__version__)
 
@@ -17,7 +17,7 @@ with open(labels_path, "r") as f:
     labels = [line.strip() for line in f.readlines()]
 
 cap = cv2.VideoCapture(0)
-detector = HandDetector(maxHands=2)  # Set maxHands to 2 to detect both hands
+detector = HandDetector(maxHands=2)
 
 # Load the model, ensuring compatibility with custom objects if needed
 model_path = "Model/keras_model.h5"
@@ -52,7 +52,8 @@ class CustomClassifier:
         img = np.expand_dims(img, axis=0)
         predictions = self.model.predict(img)
         index = np.argmax(predictions)
-        return predictions, index
+        confidence = predictions[0][index]
+        return predictions, index, confidence
 
 classifier = CustomClassifier(model, labels)
 
@@ -96,9 +97,9 @@ while True:
                 hGap = math.ceil((imgSize - hCal) / 2)
                 imgWhite[hGap:hCal + hGap, :] = imgResize
 
-            prediction, index = classifier.getPrediction(imgWhite, draw=False)
+            prediction, index, confidence = classifier.getPrediction(imgWhite, draw=False)
             label = labels[index]
-            combined_label += label + " "
+            combined_label += f"{label} ({confidence * 100:.2f}%) "
 
             # Draw bounding box around each hand
             cv2.rectangle(img, (x - offset, y - offset), (x + w + offset, y + h + offset), (0, 255, 0), 4)
